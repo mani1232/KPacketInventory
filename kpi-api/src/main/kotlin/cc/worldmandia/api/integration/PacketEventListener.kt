@@ -35,8 +35,13 @@ class PacketEventListener : PacketListener {
             PacketType.Play.Client.CLOSE_WINDOW -> {
                 WrapperPlayClientCloseWindow(event).also { packet ->
                     InventoryStorage.registeredInventories.values.filterIsInstance<SlotManager>().forEach {
-                        if (it.pushCloseEventForUser(event.user, packet) && it is ImplInventory) {
-                            event.isCancelled = it.canceledCloseEvent
+                        if (it.pushCloseEventForUser(
+                                event.user,
+                                packet
+                            ) && it is ImplInventory && it.canceledCloseEvent
+                        ) {
+                            event.isCancelled = true
+                            it.sendTo(event.user)
                         }
                     }
                 }

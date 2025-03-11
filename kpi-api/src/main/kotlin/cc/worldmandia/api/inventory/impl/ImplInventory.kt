@@ -1,7 +1,6 @@
 package cc.worldmandia.api.inventory.impl
 
 import cc.worldmandia.api.InventoryStorage
-import cc.worldmandia.api.inventory.BaseInventory
 import cc.worldmandia.api.inventory.type.BaseType
 import cc.worldmandia.api.inventory.type.InventoryType
 import cc.worldmandia.api.slot.ButtonSlot
