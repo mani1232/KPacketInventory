@@ -41,7 +41,9 @@ jobs:
     # The USERNAME and TOKEN need to correspond to the credentials environment variables used in
     # the publishing section of your build.gradle
     - name: Publish to GitHub Packages
-      run: ./gradlew kpaypal-api:publish
+      run: |
+        ./gradlew kpi-api:publish
+        ./gradlew kpi-platform:kpi-bukkit:publish
       env:
         MAVEN_NAME: ${{ secrets.MAVENNAME }} # token name
         MAVEN_SECRET: ${{ secrets.MAVENSECRET }} # token secret (password)
