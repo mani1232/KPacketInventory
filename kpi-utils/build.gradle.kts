@@ -3,6 +3,7 @@ plugins {
 }
 
 dependencies {
+    api(libs.kotlin.stdlib)
     api(libs.other.adventure.api)
     api(libs.other.adventure.minimessage)
 }

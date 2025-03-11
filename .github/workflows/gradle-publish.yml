@@ -45,5 +45,5 @@ jobs:
         ./gradlew kpi-api:publish
         ./gradlew kpi-platform:kpi-bukkit:publish
       env:
-        MAVEN_NAME: ${{ secrets.MAVENNAME }} # token name
-        MAVEN_SECRET: ${{ secrets.MAVENSECRET }} # token secret (password)
+        MAVEN_NAME: ${{ secrets.MAVEN_NAME }} # token name
+        MAVEN_SECRET: ${{ secrets.MAVEN_SECRET }} # token secret (password)

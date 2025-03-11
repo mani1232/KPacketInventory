@@ -12,6 +12,8 @@ paperweight.reobfArtifactConfiguration = MOJANG_PRODUCTION
 dependencies {
     paperweight.paperDevBundle(libs.versions.paperApi)
 
+    api(libs.kotlin.stdlib)
+
     api(libs.other.packetevents) {
         exclude("net.kyori")
     }
