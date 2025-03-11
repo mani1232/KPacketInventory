@@ -42,8 +42,8 @@ jobs:
     # the publishing section of your build.gradle
     - name: Publish to GitHub Packages
       run: |
-        ./gradlew kpi-api:publish
-        ./gradlew kpi-platform:kpi-bukkit:publish
+        ./gradlew kpi-api:publishKpi-apiPublicationToWorldMandiaRepository
+        ./gradlew kpi-platform:kpi-bukkit:publishKpi-bukkitPublicationToWorldMandiaRepository
       env:
         MAVEN_NAME: ${{ secrets.MAVEN_NAME }} # token name
         MAVEN_SECRET: ${{ secrets.MAVEN_SECRET }} # token secret (password)
