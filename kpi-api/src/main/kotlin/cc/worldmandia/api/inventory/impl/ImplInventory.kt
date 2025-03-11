@@ -1,5 +1,6 @@
 package cc.worldmandia.api.inventory.impl
 
+import cc.worldmandia.api.InventoryHelperDslMarker
 import cc.worldmandia.api.InventoryStorage
 import cc.worldmandia.api.inventory.type.BaseType
 import cc.worldmandia.api.inventory.type.InventoryType
@@ -15,10 +16,21 @@ import net.kyori.adventure.text.Component
 
 open class ImplInventory(
     private var title: Component,
-    private val type: BaseType = InventoryType.GENERIC_9X6,
+    private val type: BaseType,
     override val containerId: Int = InventoryStorage.inventoryIdsManager.incrementAndGet(),
     closeEvent: SlotManager.(User, WrapperPlayClientCloseWindow) -> Unit = { _, _ -> }
 ) : SlotManager(containerId, closeEvent) {
+
+    @InventoryHelperDslMarker
+    class ImplInventoryBuilder {
+        var title: Component =  Component.text("ChangeMe")
+        var inventoryType: InventoryType = InventoryType.GENERIC_9X6
+        var closeEvent: SlotManager.(User, WrapperPlayClientCloseWindow) -> Unit = { _, _ -> }
+
+        fun build(): ImplInventory {
+            return ImplInventory(title, inventoryType, closeEvent = closeEvent)
+        }
+    }
 
     override fun pushCloseEventForUser(user: User, wrapper: WrapperPlayClientCloseWindow): Boolean {
         return if (playersForUpdate.remove(user)) {
