@@ -22,6 +22,7 @@ For Snapshots for the branch `master` replace `{version}` with `{nextPlannedApiV
 in [`gradle.properties`](../gradle.properties))
 
 Per platform feature replace `{platform}` to your platform, like `bukkit`
+
 `implementation("cc.worldmandia:kpi-{platform}:{version}")`
 
 ### Gradle (Kotlin)
