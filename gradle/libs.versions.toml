@@ -1,0 +1,36 @@
+[versions]
+
+kotlin = "2.1.20-RC2"
+paperApi = "1.21.4-R0.1-SNAPSHOT"
+coroutines = "1.10.1"
+commandApi = "9.7.0"
+packetevents = "2.7.1-SNAPSHOT"
+updateVersions = "0.52.0"
+runPaper = "2.3.1"
+shadow = "9.0.0-beta10"
+paperweight = "2.0.0-beta.14"
+adventureApi = "4.20.0-SNAPSHOT"
+dokka = "2.0.0"
+
+[libraries]
+
+paperApi = { module = "io.papermc.paper:paper-api", version.ref = "paperApi" }
+
+kotlin-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm", version.ref = "coroutines" }
+kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
+kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
+
+other-commandApi = { module = "dev.jorel:commandapi-bukkit-shade-mojang-mapped", version.ref = "commandApi" }
+other-commandApi-kotlin = { module = "dev.jorel:commandapi-bukkit-kotlin", version.ref = "commandApi" }
+other-packetevents = { module = "com.github.retrooper:packetevents-spigot", version.ref = "packetevents" }
+other-adventure-api = { module = "net.kyori:adventure-api", version.ref = "adventureApi" }
+other-adventure-minimessage = { module = "net.kyori:adventure-text-minimessage", version.ref = "adventureApi" }
+
+[plugins]
+
+kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+updateDeps = { id = "com.github.ben-manes.versions", version.ref = "updateVersions" }
+runPaper = { id = "xyz.jpenilla.run-paper", version.ref = "runPaper" }
+dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
+shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
+paperweight = { id = "io.papermc.paperweight.userdev", version.ref = "paperweight" }

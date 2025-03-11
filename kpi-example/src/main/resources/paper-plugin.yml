@@ -1,0 +1,45 @@
+name: TestKpi
+version: "${version}"
+main: cc.worldmandia.KPITest
+api-version: "1.21.4"
+description: Test kpi Plugin by worldmandia
+author: mani1232
+website: https://worldmandia.cc/
+prefix: KPI
+load: POSTWORLD
+folia-supported: true
+
+dependencies:
+  server:
+    ProtocolLib:
+      load: AFTER
+      required: false
+      join-classpath: true
+    ProtocolSupport:
+      load: AFTER
+      required: false
+      join-classpath: true
+    ViaVersion:
+      load: AFTER
+      required: false
+      join-classpath: true
+    ViaBackwards:
+      load: AFTER
+      required: false
+      join-classpath: true
+    ViaRewind:
+      load: AFTER
+      required: false
+      join-classpath: true
+    Geyser-Spigot:
+      load: AFTER
+      required: false
+      join-classpath: true
+    WorldGuard:
+      load: AFTER
+      required: false
+      join-classpath: true
+    WorldEdit:
+      load: AFTER
+      required: false
+      join-classpath: true
