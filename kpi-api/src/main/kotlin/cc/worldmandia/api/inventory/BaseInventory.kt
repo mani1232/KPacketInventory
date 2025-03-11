@@ -6,7 +6,7 @@ import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientCl
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicInteger
 
-@InventorySlotMarker
+@BaseInventoryDslMarker
 abstract class BaseInventory(
     open val containerId: Int,
     protected var closeEvent: (User, WrapperPlayClientCloseWindow) -> Unit = { _, _ -> }
