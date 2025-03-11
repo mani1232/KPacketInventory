@@ -18,20 +18,20 @@ import org.bukkit.event.Listener
 import org.bukkit.inventory.ItemStack
 import org.bukkit.plugin.java.JavaPlugin
 
-class KPITest: JavaPlugin(), Listener {
+class KPITest : JavaPlugin(), Listener {
 
     @EventHandler
     fun onAsyncChatEvent(event: AsyncChatEvent) {
         if (event.message() == Component.text("TESTKPIAPI")) {
-            ImplInventory("Test".minimessage()).modifySlots {
+            ImplInventory("Test".minimessage()) { user, _ ->
+                logger.info { "Menu closed! ${user.name}" }
+            }.modifySlots {
                 +Slot(1, BukkitButtonSlot(ItemStack(Material.TNT)) { _ ->
                     logger.info { "Button clicked! 1" }
                 })
                 slots(ButtonSlot(ItemStack(Material.BIRCH_WOOD).convert()) { _ ->
                     logger.info { "Button clicked! 2" }
                 }, 2, 0, 3)
-            }.onMenuClose { user, _ ->
-                logger.info { "Menu closed! ${user.name}" }
             }.sendTo(event.player)
         }
     }

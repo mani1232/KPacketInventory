@@ -16,12 +16,13 @@ import net.kyori.adventure.text.Component
 open class ImplInventory(
     private var title: Component,
     private val type: BaseType = InventoryType.GENERIC_9X6,
-    override val containerId: Int = InventoryStorage.inventoryIdsManager.incrementAndGet()
-) : SlotManager(containerId) {
+    override val containerId: Int = InventoryStorage.inventoryIdsManager.incrementAndGet(),
+    closeEvent: SlotManager.(User, WrapperPlayClientCloseWindow) -> Unit = { _, _ -> }
+) : SlotManager(containerId, closeEvent) {
 
     override fun pushCloseEventForUser(user: User, wrapper: WrapperPlayClientCloseWindow): Boolean {
         return if (playersForUpdate.remove(user)) {
-            closeEvent.invoke(user, wrapper)
+            closeEvent.invoke(this, user, wrapper)
             true
         } else false
     }
@@ -86,11 +87,4 @@ open class ImplInventory(
         )
         return this
     }
-
-    override fun onMenuClose(customEvent: (User, WrapperPlayClientCloseWindow) -> Unit): ImplInventory {
-        closeEvent = customEvent
-        return this
-    }
-
-
 }

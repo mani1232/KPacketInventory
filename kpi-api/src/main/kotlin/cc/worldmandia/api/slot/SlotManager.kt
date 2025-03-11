@@ -5,9 +5,13 @@ import cc.worldmandia.api.inventory.InventoryEventManager
 import cc.worldmandia.api.inventory.InventoryPlayerManager
 import com.github.retrooper.packetevents.protocol.item.ItemStack
 import com.github.retrooper.packetevents.protocol.player.User
+import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientCloseWindow
 import java.util.concurrent.ConcurrentHashMap
 
-abstract class SlotManager(containerId: Int) : BaseInventory(containerId), InventoryPlayerManager,
+abstract class SlotManager(
+    containerId: Int,
+    closeEvent: SlotManager.(User, WrapperPlayClientCloseWindow) -> Unit
+) : BaseInventory(containerId, closeEvent), InventoryPlayerManager,
     InventoryEventManager {
 
     protected val slots = ConcurrentHashMap<Int, BaseSlot>()
