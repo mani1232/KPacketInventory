@@ -1,11 +1,11 @@
 package cc.worldmandia.api.inventory.impl
 
 import cc.worldmandia.api.InventoryHelperDslMarker
-import cc.worldmandia.api.InventoryStorage
 import cc.worldmandia.api.inventory.type.BaseType
 import cc.worldmandia.api.inventory.type.InventoryType
 import cc.worldmandia.api.slot.ButtonSlot
 import cc.worldmandia.api.slot.SlotManager
+import com.github.retrooper.packetevents.PacketEvents
 import com.github.retrooper.packetevents.protocol.item.ItemStack
 import com.github.retrooper.packetevents.protocol.player.User
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientClickWindow
@@ -13,17 +13,17 @@ import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientCl
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerOpenWindow
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerWindowItems
 import net.kyori.adventure.text.Component
+import kotlin.uuid.ExperimentalUuidApi
 
 open class ImplInventory(
     private var title: Component,
-    private val type: BaseType,
-    override val containerId: Int = InventoryStorage.inventoryIdsManager.incrementAndGet(),
+    override val type: BaseType,
     closeEvent: SlotManager.(User, WrapperPlayClientCloseWindow) -> Unit = { _, _ -> }
-) : SlotManager(containerId, closeEvent) {
+) : SlotManager(type, closeEvent) {
 
     @InventoryHelperDslMarker
     class ImplInventoryBuilder {
-        var title: Component =  Component.text("ChangeMe")
+        var title: Component = Component.text("ChangeMe")
         var inventoryType: InventoryType = InventoryType.GENERIC_9X6
         var closeEvent: SlotManager.(User, WrapperPlayClientCloseWindow) -> Unit = { _, _ -> }
 
@@ -45,6 +45,7 @@ open class ImplInventory(
         }
     }
 
+    @OptIn(ExperimentalUuidApi::class)
     override fun sendTo(packetPlayer: User, refresh: Boolean): ImplInventory {
         playersForUpdate.add(packetPlayer)
         packetPlayer.sendPacket(WrapperPlayServerOpenWindow(containerId, type.typeId(), title))
@@ -54,10 +55,12 @@ open class ImplInventory(
         return this
     }
 
+    @OptIn(ExperimentalUuidApi::class)
     override fun isPlayerRegistered(packetPlayer: User): Boolean {
         return playersForUpdate.contains(packetPlayer)
     }
 
+    @OptIn(ExperimentalUuidApi::class)
     override fun closeFor(packetPlayer: User, pushEvent: Boolean): ImplInventory {
         playersForUpdate.remove(packetPlayer)
         WrapperPlayClientCloseWindow(containerId).let {
@@ -82,7 +85,7 @@ open class ImplInventory(
             slots[it.key] = it.value
         }
         playersForUpdate.forEach { user ->
-            refreshSlots(user)
+            refreshSlots(PacketEvents.getAPI().playerManager.getUser(user))
         }
         pendingUpdate.clear()
         return this

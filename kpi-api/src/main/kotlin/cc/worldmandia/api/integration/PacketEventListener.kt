@@ -15,20 +15,20 @@ class PacketEventListener : PacketListener {
         when (event.packetType) {
             PacketType.Play.Client.CLICK_WINDOW -> {
                 WrapperPlayClientClickWindow(event).also { packet ->
-                    event.isCancelled = (InventoryStorage.registeredInventories.entries.firstOrNull {
-                        it.key == packet.windowId || (it.value is SlotManager && (it.value as SlotManager).isPlayerRegistered(
-                            event.user
-                        ))
-                    })?.let {
-                        if (it.value is SlotManager) {
-                            (it.value as SlotManager).let { manager ->
-                                manager.pushClickEvent(packet.slot, packet)
-                                manager.isCancelled(packet.slot).apply {
-                                    if (this) manager.refreshSlots(event.user)
+                    InventoryStorage.registeredInventories[packet.windowId]?.let {
+                        if (it is SlotManager && it.isPlayerRegistered(event.user) && packet.slot < it.type.typeSize()
+                        ) {
+
+                            it.pushClickEvent(packet.slot, packet)
+                            event.isCancelled = it.isCancelled(packet.slot).apply {
+                                if (this) {
+                                    it.refreshSlots(event.user)
                                 }
                             }
-                        } else false
-                    } == true
+                        } else if (it is SlotManager && packet.slot > it.type.typeSize() && packet.windowClickType == WrapperPlayClientClickWindow.WindowClickType.PICKUP && packet.button < 1) {
+                            it.carriedItem = packet.carriedItemStack
+                        }
+                    }
                 }
             }
 
@@ -36,8 +36,7 @@ class PacketEventListener : PacketListener {
                 WrapperPlayClientCloseWindow(event).also { packet ->
                     InventoryStorage.registeredInventories.values.filterIsInstance<SlotManager>().forEach {
                         if (it.pushCloseEventForUser(
-                                event.user,
-                                packet
+                                event.user, packet
                             ) && it is ImplInventory && it.canceledCloseEvent
                         ) {
                             event.isCancelled = true

@@ -3,15 +3,16 @@ package cc.worldmandia.api.slot
 import cc.worldmandia.api.inventory.BaseInventory
 import cc.worldmandia.api.inventory.InventoryEventManager
 import cc.worldmandia.api.inventory.InventoryPlayerManager
+import cc.worldmandia.api.inventory.type.BaseType
 import com.github.retrooper.packetevents.protocol.item.ItemStack
 import com.github.retrooper.packetevents.protocol.player.User
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientCloseWindow
 import java.util.concurrent.ConcurrentHashMap
 
 abstract class SlotManager(
-    containerId: Int,
+    open val type: BaseType,
     closeEvent: SlotManager.(User, WrapperPlayClientCloseWindow) -> Unit
-) : BaseInventory(containerId, closeEvent), InventoryPlayerManager,
+) : BaseInventory(closeEvent = closeEvent), InventoryPlayerManager,
     InventoryEventManager {
 
     protected val slots = ConcurrentHashMap<Int, BaseSlot>()
@@ -29,6 +30,10 @@ abstract class SlotManager(
         slotIds.forEach { slotId ->
             pendingUpdate.put(slotId, newItem)
         }
+    }
+
+    fun slots(newItem: BaseSlot, slotIds: IntRange) {
+        slots(newItem, *slotIds.toList().toIntArray())
     }
 
     abstract fun modifySlots(modifiedSlots: SlotManager.() -> Unit): BaseInventory

@@ -43,7 +43,10 @@ class KPITest : JavaPlugin(), Listener {
                 })
                 slots(ButtonSlot(ItemStack(Material.BIRCH_WOOD).convert()) { _ ->
                     logger.info { "Button clicked! 2" }
-                }, 2, 0, 3)
+                }, 2..9)
+                slots(ButtonSlot(ItemStack(Material.DIAMOND).convert()) { _ ->
+                    logger.info { "Button clicked! 3" }
+                }, 11, 20)
             }.sendTo(event.player)
         }
     }

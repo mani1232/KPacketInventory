@@ -6,12 +6,14 @@ import com.github.retrooper.packetevents.protocol.player.User
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientCloseWindow
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicInteger
+import kotlin.uuid.ExperimentalUuidApi
 
 @BaseInventoryDslMarker
 abstract class BaseInventory(
-    open val containerId: Int,
+    protected val containerId: Int = InventoryStorage.inventoryIdsManager.incrementAndGet(),
     var closeEvent: SlotManager.(User, WrapperPlayClientCloseWindow) -> Unit
 ) {
+    @OptIn(ExperimentalUuidApi::class)
     protected val playersForUpdate: MutableSet<User> = ConcurrentHashMap.newKeySet()
     protected var stateId = AtomicInteger(1)
 
