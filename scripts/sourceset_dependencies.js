@@ -1,0 +1,1 @@
+sourceset_dependencies = '{":kpi-platform:kpi-bukkit/main":[],":kpi-utils/main":[],":kpi-api/main":[]}'
