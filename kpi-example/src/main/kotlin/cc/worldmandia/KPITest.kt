@@ -48,16 +48,16 @@ class KPITest : JavaPlugin(), Listener {
         server.pluginManager.registerEvents(this, this)
 
 
-        btn2 = BukkitButtonSlot(ItemStack(Material.DIAMOND)) { oldBtnClick ->
+        btn2 = BukkitButtonSlot(ItemStack(Material.GOLD_INGOT)) { oldBtnClick ->
             oldBtnClick.user.convert()?.sendMessage(Component.text("Btn 2"))
             inventory.modifyGui {
-                11 to btn4
+                +(11 to btn4)
             }
         }
         btn4 = BukkitButtonSlot(ItemStack(Material.DIAMOND)) { newBtnClick ->
             newBtnClick.user.convert()?.sendMessage(Component.text("Btn 4"))
             inventory.modifyGui {
-                11 to btn2
+               +(11 to btn2)
             }
         }
 
@@ -65,14 +65,14 @@ class KPITest : JavaPlugin(), Listener {
             title("KPI Test") // From adventure helpers
             content {
                 // Change by Range
-                slots(BukkitButtonSlot(ItemStack(Material.DIAMOND)) {
+                slots(BukkitButtonSlot(ItemStack(Material.TNT)) {
                     it.user.convert()?.sendMessage(Component.text("Btn 1"))
                     inventory.refreshContentFor(it.user)
                 }, 0..GuiType.GENERIC_9X6.typeSize() - 20)
                 // Change by id
-                11 to btn2
+                +(11 to btn2)
                 // Fill ranged empty slots
-                fill(BukkitButtonSlot(ItemStack(Material.DIAMOND)) {
+                fill(BukkitButtonSlot(ItemStack(Material.GRAY_STAINED_GLASS_PANE)) {
                     inventory.refreshContentFor(it.user)
                     it.user.convert()?.sendMessage(Component.text("Btn 3"))
                 }, 0..GuiType.GENERIC_9X6.typeSize())

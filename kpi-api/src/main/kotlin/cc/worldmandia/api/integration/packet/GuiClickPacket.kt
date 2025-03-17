@@ -5,6 +5,6 @@ import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientCl
 
 data class GuiClickPacket(
     val user: User,
-    val closePacket: WrapperPlayClientClickWindow,
-    var cancelled: Boolean = false
+    val clickPacket: WrapperPlayClientClickWindow,
+    var cancelled: Boolean = false,
 )

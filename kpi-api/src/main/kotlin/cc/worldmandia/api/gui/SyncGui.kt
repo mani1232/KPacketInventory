@@ -23,10 +23,14 @@ open class SyncGui(
 ) : BaseGui(guiType), SlotManaged, UserBasedGui {
 
     override fun processSlots(packet: GuiClickPacket) {
-        guiContent.guiItems.forEach {
-            when (val btn = it) {
+        guiContent.guiItems[packet.clickPacket.slot].apply {
+            when (val btn = this) {
                 is ButtonSlot -> {
                     btn.onClick(packet)
+                }
+                else -> {
+                    packet.cancelled = true
+                    refreshContentFor(packet.user)
                 }
             }
         }
