@@ -1,10 +1,9 @@
 package cc.worldmandia.api.slot
 
+import cc.worldmandia.api.integration.packet.GuiClickPacket
 import com.github.retrooper.packetevents.protocol.item.ItemStack
-import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientClickWindow
 
 open class ButtonSlot(
-    override val itemType: ItemStack,
-    open var canceledClickEvent: Boolean = true,
-    open val onClick: (WrapperPlayClientClickWindow) -> Unit
-) : BaseSlot(itemType)
+    itemStack: ItemStack,
+    open val onClick: (GuiClickPacket) -> Unit,
+) : BaseSlot(itemStack)

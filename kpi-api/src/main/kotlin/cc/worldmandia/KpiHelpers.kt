@@ -1,6 +1,6 @@
 package cc.worldmandia
 
-import cc.worldmandia.api.inventory.impl.ImplInventory
+import cc.worldmandia.api.gui.SyncGui
 
-fun createBaseInventory(builder: ImplInventory.ImplInventoryBuilder.() -> Unit) =
-    ImplInventory.ImplInventoryBuilder().apply(builder).build()
+fun createSyncGui(init: SyncGui.SyncGuiBuilder.() -> Unit) =
+    SyncGui.SyncGuiBuilder().apply(init).build()

@@ -1,0 +1,38 @@
+# This workflow will build and deploy docs to GitHub Pages whenever something is pushed to the main branch
+
+name: Docs
+
+on:
+  push:
+    branches:
+      - master
+
+permissions:
+  contents: write
+
+jobs:
+  docs:
+    name: Build and deploy docs
+    runs-on: ubuntu-latest
+    concurrency: # Allow one concurrent deployment
+      group: pages
+      cancel-in-progress: true
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: zulu
+          java-version: 21
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v3
+      - name: Build docs with Gradle
+        run: ./gradlew --stacktrace --info dokkaGenerate
+      - name: Deploy docs to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: kpi-platform/build/dokka/html
+          branch: gh-pages
+          git-config-name: GitHub Actions
+          git-config-email: actions@github.com
+          commit-message: Update docs

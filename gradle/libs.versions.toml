@@ -1,6 +1,6 @@
 [versions]
 
-kotlin = "2.1.20-RC2"
+kotlin = "2.1.20-RC3"
 paperApi = "1.21.4-R0.1-SNAPSHOT"
 coroutines = "1.10.1"
 commandApi = "9.7.0"
@@ -8,7 +8,7 @@ packetevents = "2.7.1-SNAPSHOT"
 updateVersions = "0.52.0"
 runPaper = "2.3.1"
 shadow = "9.0.0-beta10"
-paperweight = "2.0.0-beta.14"
+paperweight = "2.0.0-beta.15"
 adventureApi = "4.20.0-SNAPSHOT"
 dokka = "2.0.0"
 
@@ -32,5 +32,6 @@ kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 updateDeps = { id = "com.github.ben-manes.versions", version.ref = "updateVersions" }
 runPaper = { id = "xyz.jpenilla.run-paper", version.ref = "runPaper" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
+dokkaJavadoc = { id = "org.jetbrains.dokka-javadoc", version.ref = "dokka" }
 shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
 paperweight = { id = "io.papermc.paperweight.userdev", version.ref = "paperweight" }

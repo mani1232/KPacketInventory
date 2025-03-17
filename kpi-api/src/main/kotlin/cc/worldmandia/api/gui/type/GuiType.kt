@@ -1,6 +1,6 @@
-package cc.worldmandia.api.inventory.type
+package cc.worldmandia.api.gui.type
 
-enum class InventoryType(val type: Int, val size: Int) : BaseType {
+enum class GuiType(val type: Int, val size: Int) : BaseType {
     GENERIC_9X1(0, 9), // A 1-row inventory, not used by the notchian server.
     GENERIC_9X2(1, 18), // A 2-row inventory, not used by the notchian server.
     GENERIC_9X3(2, 27), // General-purpose 3-row inventory. Used by Chest, minecart with chest, ender chest, and barrel.

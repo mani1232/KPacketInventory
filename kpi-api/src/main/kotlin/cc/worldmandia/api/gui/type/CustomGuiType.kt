@@ -1,6 +1,6 @@
-package cc.worldmandia.api.inventory.type
+package cc.worldmandia.api.gui.type
 
-data class CustomInventoryType(val type: Int, val size: Int) : BaseType {
+data class CustomGuiType(val type: Int, val size: Int) : BaseType {
     override fun typeId(): Int {
         return type
     }

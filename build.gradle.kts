@@ -6,11 +6,17 @@ plugins {
    alias(libs.plugins.paperweight) apply false
    alias(libs.plugins.updateDeps) apply true
    alias(libs.plugins.dokka) apply false
+   alias(libs.plugins.dokkaJavadoc) apply false
 }
 
 allprojects {
    group = "cc.worldmandia"
    version = libraryVersion
+}
+
+subprojects {
+   apply(plugin = "org.jetbrains.dokka")
+   apply(plugin = "org.jetbrains.dokka-javadoc")
 }
 
 private fun Project.git(vararg command: String): String {

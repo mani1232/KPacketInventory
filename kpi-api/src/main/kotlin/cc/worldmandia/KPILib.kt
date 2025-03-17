@@ -7,6 +7,8 @@ import com.github.retrooper.packetevents.event.PacketListenerPriority
 
 object KPILib {
 
+    var enableDebug: Boolean = true
+
     fun registerPacketListener(packetListenerPriority: PacketListenerPriority = PacketListenerPriority.HIGH) {
         if (!PacketEvents.getAPI().isInitialized) return
 

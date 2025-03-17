@@ -1,4 +1,4 @@
-package cc.worldmandia.api.inventory.type
+package cc.worldmandia.api.gui.type
 
 interface BaseType {
     fun typeId(): Int
