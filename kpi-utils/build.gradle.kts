@@ -6,7 +6,7 @@ plugins {
 }
 
 dependencies {
-    api(project(":kpi-api"))
+    implementation(project(":kpi-api"))
 
     api(libs.kotlin.stdlib)
     api(libs.other.adventure.api)
