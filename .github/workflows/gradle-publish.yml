@@ -43,6 +43,7 @@ jobs:
     - name: Publish to GitHub Packages
       run: |
         ./gradlew kpi-api:publishKpi-apiPublicationToWorldMandiaRepository
+        ./gradlew kpi-utils:publishKpi-utilsPublicationToWorldMandiaRepository
         ./gradlew kpi-platform:kpi-bukkit:publishKpi-bukkitPublicationToWorldMandiaRepository
       env:
         MAVEN_NAME: ${{ secrets.MAVEN_NAME }} # token name
