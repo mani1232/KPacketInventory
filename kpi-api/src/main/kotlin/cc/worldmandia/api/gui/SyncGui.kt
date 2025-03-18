@@ -8,7 +8,6 @@ import cc.worldmandia.api.gui.type.BaseType
 import cc.worldmandia.api.gui.type.GuiType
 import cc.worldmandia.api.integration.packet.GuiClickPacket
 import cc.worldmandia.api.slot.BaseSlot
-import cc.worldmandia.api.slot.ButtonSlot
 import com.github.retrooper.packetevents.protocol.item.ItemStack
 import com.github.retrooper.packetevents.protocol.player.User
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerCloseWindow
@@ -23,17 +22,7 @@ open class SyncGui(
 ) : BaseGui(guiType), SlotManaged, UserBasedGui {
 
     override fun processSlots(packet: GuiClickPacket) {
-        guiContent.guiItems[packet.clickPacket.slot].apply {
-            when (val btn = this) {
-                is ButtonSlot -> {
-                    btn.onClick(packet)
-                }
-                else -> {
-                    packet.cancelled = true
-                    refreshContentFor(packet.user)
-                }
-            }
-        }
+        guiContent.guiItems[packet.clickPacket.slot]?.beforeClickEvent(packet)
     }
 
     protected val playersForSync: MutableSet<User> = ConcurrentHashMap.newKeySet()
@@ -99,8 +88,8 @@ open class SyncGui(
 
     override fun closeFor(silently: Boolean, vararg users: User): SyncGui {
         users.forEach { user ->
-            if (playersForSync.remove(user)) {
-                if (!silently) user.sendPacket(WrapperPlayServerCloseWindow(containerId))
+            if (playersForSync.remove(user) && !silently) {
+                user.sendPacket(WrapperPlayServerCloseWindow(containerId))
             }
         }
         return this

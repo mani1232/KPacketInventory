@@ -75,7 +75,7 @@ class KPITest : JavaPlugin(), Listener {
                 fill(BukkitButtonSlot(ItemStack(Material.GRAY_STAINED_GLASS_PANE)) {
                     inventory.refreshContentFor(it.user)
                     it.user.convert()?.sendMessage(Component.text("Btn 3"))
-                }, 0..GuiType.GENERIC_9X6.typeSize())
+                }, 0..GuiType.GENERIC_9X6.typeSize() - 1)
             }
         }
     }
