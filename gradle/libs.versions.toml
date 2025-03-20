@@ -1,15 +1,15 @@
 [versions]
 
-kotlin = "2.1.20-RC3"
+kotlin = "2.1.20"
 paperApi = "1.21.4-R0.1-SNAPSHOT"
 coroutines = "1.10.1"
 commandApi = "9.7.0"
 packetevents = "2.7.1-SNAPSHOT"
 updateVersions = "0.52.0"
 runPaper = "2.3.1"
-shadow = "9.0.0-beta10"
+shadow = "9.0.0-beta11"
 paperweight = "2.0.0-beta.15"
-adventureApi = "4.20.0-SNAPSHOT"
+adventureApi = "4.19.0"
 dokka = "2.0.0"
 
 [libraries]

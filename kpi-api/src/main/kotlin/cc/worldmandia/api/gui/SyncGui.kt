@@ -9,13 +9,16 @@ import cc.worldmandia.api.gui.type.GuiType
 import cc.worldmandia.api.integration.packet.GuiClickPacket
 import cc.worldmandia.api.slot.BaseSlot
 import com.github.retrooper.packetevents.protocol.item.ItemStack
+import com.github.retrooper.packetevents.protocol.item.type.ItemType
 import com.github.retrooper.packetevents.protocol.player.User
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerCloseWindow
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerOpenWindow
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerWindowItems
 import net.kyori.adventure.text.Component
 import java.util.concurrent.ConcurrentHashMap
+import kotlin.concurrent.atomics.ExperimentalAtomicApi
 
+@OptIn(ExperimentalAtomicApi::class)
 open class SyncGui(
     protected val title: Component,
     protected val guiContent: EditableGui, guiType: BaseType,
@@ -47,15 +50,29 @@ open class SyncGui(
 
         fun build(): EditableGui = EditableGui(guiItems, carriedItem)
 
-        override fun slots(item: BaseSlot, vararg slotIds: Int) {
+        override fun slots(slot: BaseSlot, vararg slotIds: Int) {
             slotIds.forEach { slotId ->
-                guiItems[slotId] = item
+                guiItems[slotId] = slot
             }
         }
 
-        override fun fill(fillItem: BaseSlot, slotIds: IntRange) {
+        override fun replaceByType(
+            slot: BaseSlot,
+            vararg types: ItemType
+        ) {
+            guiItems.replaceAll { _, oldSlot ->
+                if (types.contains(oldSlot.itemStack.type)) {
+                    slot
+                } else {
+                    oldSlot
+                }
+            }
+        }
+
+
+        override fun fill(fillSlot: BaseSlot, slotIds: IntRange) {
             slotIds.forEach { slotId ->
-                guiItems.putIfAbsent(slotId, fillItem)
+                guiItems.putIfAbsent(slotId, fillSlot)
             }
         }
 
@@ -69,7 +86,7 @@ open class SyncGui(
             guiContent.guiItems += guiItems
             guiContent.carriedItem = carriedItem
         }
-        stateId.incrementAndGet()
+        stateId.fetchAndAdd(1)
         if (refreshContent) refreshContentForAll()
         return this
     }
@@ -106,7 +123,7 @@ open class SyncGui(
                 user.sendPacket(
                     WrapperPlayServerWindowItems(
                         containerId,
-                        stateId.get(),
+                        stateId.load(),
                         MutableList<ItemStack>(guiType.typeSize()) {
                             guiContent.guiItems[it]?.itemStack ?: ItemStack.EMPTY
                         },

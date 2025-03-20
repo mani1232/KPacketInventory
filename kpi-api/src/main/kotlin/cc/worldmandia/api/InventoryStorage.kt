@@ -2,12 +2,14 @@ package cc.worldmandia.api
 
 import cc.worldmandia.api.gui.BaseGui
 import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.atomic.AtomicInteger
+import kotlin.concurrent.atomics.AtomicInt
+import kotlin.concurrent.atomics.ExperimentalAtomicApi
 
+@OptIn(ExperimentalAtomicApi::class)
 object InventoryStorage {
 
     val registeredInventories = ConcurrentHashMap<Int, BaseGui>()
 
-    val inventoryIdsManager = AtomicInteger(101)
+    val inventoryIdsManager = AtomicInt(100)
 
 }
