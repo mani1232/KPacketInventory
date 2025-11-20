@@ -9,6 +9,12 @@ plugins {
 
 paperweight.reobfArtifactConfiguration = MOJANG_PRODUCTION
 
+paperweight {
+    javaLauncher = javaToolchains.launcherFor {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
 dependencies {
     paperweight.paperDevBundle(libs.versions.paperApi)
 

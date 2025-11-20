@@ -1,16 +1,16 @@
 [versions]
 
-kotlin = "2.1.20-RC3"
-paperApi = "1.21.4-R0.1-SNAPSHOT"
-coroutines = "1.10.1"
-commandApi = "9.7.0"
-packetevents = "2.7.1-SNAPSHOT"
-updateVersions = "0.52.0"
-runPaper = "2.3.1"
-shadow = "9.0.0-beta10"
-paperweight = "2.0.0-beta.15"
-adventureApi = "4.20.0-SNAPSHOT"
-dokka = "2.0.0"
+kotlin = "2.3.0-RC"
+paperApi = "1.21.10-R0.1-SNAPSHOT"
+coroutines = "1.10.2"
+commandApi = "10.1.2"
+packetevents = "2.10.1"
+updateVersions = "0.53.0"
+runPaper = "3.0.2"
+shadow = "9.2.2"
+paperweight = "2.0.0-beta.19"
+adventureApi = "4.25.0"
+dokka = "2.1.0"
 
 [libraries]
 

@@ -19,34 +19,72 @@ subprojects {
    apply(plugin = "org.jetbrains.dokka-javadoc")
 }
 
-private fun Project.git(vararg command: String): String {
-   val output = ByteArrayOutputStream()
-   exec {
-      commandLine("git", *command)
-      standardOutput = output
-      errorOutput = output
-      workingDir = rootDir
-   }.rethrowFailure().assertNormalExitValue()
-   return output.toString().trim()
-}
-
-val Project.libraryVersion
-   get() = tag ?: run {
-      val snapshotPrefix = when (val branch = git("branch", "--show-current")) {
-         "master" -> providers.gradleProperty("nextPlannedApiVersion").get()
-         else -> branch.replace('/', '-')
-      }
-      if (isRelease == true) snapshotPrefix else "$snapshotPrefix-SNAPSHOT"
+abstract class GitValueSource : ValueSource<String, GitValueSource.Params> {
+   interface Params : ValueSourceParameters {
+      val commands: ListProperty<String>
    }
 
-private val Project.tag
-   get() = git("tag", "--no-column", "--points-at", "HEAD")
-      .takeIf { it.isNotBlank() }
-      ?.lines()
+   @get:Inject
+   abstract val execOperations: ExecOperations
 
-val Project.commitHash get() = git("rev-parse", "--verify", "HEAD")
-val Project.shortCommitHash get() = git("rev-parse", "--short", "HEAD")
+   override fun obtain(): String? {
+      val output = ByteArrayOutputStream()
+      val error = ByteArrayOutputStream()
+      val commandsList = parameters.commands.get()
 
-val Project.isRelease
-   get() = providers.gradleProperty("isRelease").get()
-      .toBooleanStrictOrNull()
+      val result = execOperations.exec {
+         commandLine("git")
+         args(commandsList)
+         standardOutput = output
+         errorOutput = error
+         isIgnoreExitValue = true
+      }
+
+      if (result.exitValue != 0) {
+         return null
+      }
+      return output.toString().trim()
+   }
+}
+
+private fun Project.gitProvider(vararg command: String): Provider<String> {
+   return providers.of(GitValueSource::class) {
+      parameters.commands.set(command.toList())
+   }
+}
+
+private val Project.tagProvider: Provider<List<String>>
+   get() = gitProvider("tag", "--no-column", "--points-at", "HEAD")
+      .map { output ->
+         output.takeIf { it.isNotBlank() }?.lines() ?: emptyList()
+      }
+
+val Project.commitHash: String
+   get() = gitProvider("rev-parse", "--verify", "HEAD").getOrElse("")
+
+val Project.shortCommitHash: String
+   get() = gitProvider("rev-parse", "--short", "HEAD").getOrElse("")
+
+val Project.isRelease: Boolean
+   get() = providers.gradleProperty("isRelease")
+      .map { it.toBoolean() }
+      .getOrElse(false)
+
+val Project.libraryVersion: String
+   get() {
+      val tags = tagProvider.getOrElse(emptyList())
+
+      if (tags.isNotEmpty()) {
+         return tags.first()
+      }
+
+      val branchName = gitProvider("branch", "--show-current").getOrElse("unknown")
+      val nextPlannedVersion = providers.gradleProperty("nextPlannedApiVersion").getOrElse("0.0.1")
+
+      val snapshotPrefix = when (branchName) {
+         "master", "main" -> nextPlannedVersion
+         else -> branchName.replace('/', '-')
+      }
+
+      return if (isRelease) snapshotPrefix else "$snapshotPrefix-SNAPSHOT"
+   }
